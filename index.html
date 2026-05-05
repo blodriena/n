@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXUS — Crypto & Finance Platform</title>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+<body>
+ 
+<canvas id="particles"></canvas>
+ 
+<nav>
+  <a class="nav-logo" href="#" onclick="showPage('home')">
+    <div class="logo-dot"></div>
+    NEXUS
+  </a>
+  <ul class="nav-links">
+    <li><a onclick="showPage('home')"      id="nav-home"      class="active">Home</a></li>
+    <li><a onclick="showPage('markets')"   id="nav-markets">Markets</a></li>
+    <li><a onclick="showPage('dashboard')" id="nav-dashboard">Dashboard</a></li>
+    <li><a onclick="showPage('pricing')"   id="nav-pricing">Pricing</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="btn-ghost">Log In</button>
+    <button class="btn-neon">Get Started</button>
+  </div>
+</nav>
+ 
+<div class="ticker-wrap">
+  <div class="ticker-track" id="ticker"></div>
+</div>
+ 
+<div class="page active" id="page-home">
+  <div class="hero-eyebrow">🌐 Next-Gen Crypto Finance Platform</div>
+  <h1 class="hero-headline">
+    TRADE THE<br>
+    <span class="neon-green">FUTURE.</span><br>
+    <span class="neon-blue">OWN</span> THE MARKET.
+  </h1>
+  <p class="hero-sub">
+    Professional-grade crypto trading, real-time analytics, and institutional finance tools — all in one platform built for the next generation of wealth.
+  </p>
+  <div class="hero-actions">
+    <a class="btn-primary" href="#" onclick="showPage('dashboard')">Launch Dashboard</a>
+    <a class="btn-secondary" href="#" onclick="showPage('markets')">View Markets →</a>
+  </div>
+ 
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="stat-label">24H Volume</div>
+      <div class="stat-value green">$4.2B</div>
+      <div class="stat-change up">↑ 12.4% today</div>
+    </div>
+    <div class="hero-stat">
+      <div class="stat-label">Total Users</div>
+      <div class="stat-value blue">892K</div>
+      <div class="stat-change up">↑ 3,241 this week</div>
+    </div>
+    <div class="hero-stat">
+      <div class="stat-label">Assets Listed</div>
+      <div class="stat-value white">340+</div>
+      <div class="stat-change up">↑ 14 new coins</div>
+    </div>
+    <div class="hero-stat">
+      <div class="stat-label">Avg. Uptime</div>
+      <div class="stat-value pink">99.9%</div>
+      <div class="stat-change up">● All systems go</div>
+    </div>
+  </div>
+</div>
+ 
+<div class="page" id="page-markets">
+  <div class="page-header anim">
+    <div class="section-tag">// Live Markets</div>
+    <h2 class="page-title">CRYPTO <span>MARKETS</span></h2>
+    <p class="page-sub">Real-time prices, charts, and trading data across all major assets.</p>
+  </div>
+ 
+  <div class="markets-controls">
+    <div class="filter-tabs">
+      <button class="filter-tab active" onclick="filterMarket('all',this)">All</button>
+      <button class="filter-tab" onclick="filterMarket('gainers',this)">🔥 Gainers</button>
+      <button class="filter-tab" onclick="filterMarket('losers',this)">📉 Losers</button>
+      <button class="filter-tab" onclick="filterMarket('new',this)">✦ New</button>
+    </div>
+    <div class="search-box">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" placeholder="Search coins…" id="coin-search" oninput="renderMarkets()">
+    </div>
+  </div>
+ 
+  <div class="markets-table">
+    <div class="table-head">
+      <div class="th">#</div>
+      <div class="th">Asset</div>
+      <div class="th right">Price</div>
+      <div class="th right">24H</div>
+      <div class="th right">Market Cap</div>
+      <div class="th right">Volume</div>
+      <div class="th right">Action</div>
+    </div>
+    <div id="market-rows"></div>
+  </div>
+</div>
+ 
+<div class="page" id="page-dashboard">
+  <div class="page-header anim">
+    <div class="section-tag">// Portfolio Overview</div>
+    <h2 class="page-title">YOUR <span>DASHBOARD</span></h2>
+  </div>
+ 
+  <div class="dash-grid">
+    <div class="dash-card anim">
+      <div class="card-label">Total Portfolio Value</div>
+      <div class="card-value">$84,291.50</div>
+      <div class="card-sub">↑ +$3,241.88 (4.0%) today</div>
+      <div class="portfolio-chart-wrap">
+        <canvas id="portfolio-chart"></canvas>
+      </div>
+    </div>
+ 
+    <div class="dash-card anim">
+      <div class="card-label">Asset Breakdown</div>
+      <div class="asset-list" id="asset-list"></div>
+    </div>
+  </div>
+ 
+  <div style="display:grid;grid-template-columns:1fr 1fr 1.2fr;gap:20px;margin-bottom:20px;">
+    <div class="dash-card anim">
+      <div class="card-label">Best Performer</div>
+      <div class="card-value" style="font-size:1.8rem;color:var(--green);">SOL</div>
+      <div class="card-sub">↑ +18.4% this week</div>
+    </div>
+    <div class="dash-card anim">
+      <div class="card-label">Total Profit / Loss</div>
+      <div class="card-value" style="font-size:1.8rem;color:var(--green);">+$12,408</div>
+      <div class="card-sub">↑ All time return</div>
+    </div>
+ 
+    <div class="trade-panel anim">
+      <div class="card-label" style="margin-bottom:14px;">Quick Trade</div>
+      <div class="trade-tabs">
+        <button class="trade-tab buy active" onclick="setTradeTab('buy',this)">BUY</button>
+        <button class="trade-tab sell" onclick="setTradeTab('sell',this)">SELL</button>
+      </div>
+      <div class="trade-field">
+        <label>Asset</label>
+        <div class="trade-input-wrap">
+          <input type="text" value="BTC" placeholder="BTC">
+          <span class="trade-suffix">Coin</span>
+        </div>
+      </div>
+      <div class="trade-field">
+        <label>Amount (USD)</label>
+        <div class="trade-input-wrap">
+          <input type="number" placeholder="0.00" id="trade-amount">
+          <span class="trade-suffix">USD</span>
+        </div>
+      </div>
+      <div class="pct-row">
+        <button class="pct-btn" onclick="setPct(25)">25%</button>
+        <button class="pct-btn" onclick="setPct(50)">50%</button>
+        <button class="pct-btn" onclick="setPct(75)">75%</button>
+        <button class="pct-btn" onclick="setPct(100)">MAX</button>
+      </div>
+      <button class="btn-trade-buy" id="trade-btn" onclick="executeTrade()">BUY NOW</button>
+    </div>
+  </div>
+ 
+  <div class="dash-card anim">
+    <div class="card-label" style="margin-bottom:20px;">Recent Transactions</div>
+    <div class="txn-list" id="txn-list"></div>
+  </div>
+</div>
+ 
+<div class="page" id="page-pricing">
+  <div class="page-header anim" style="text-align:center;margin-bottom:56px;">
+    <div class="section-tag" style="margin:0 auto 18px;">// Simple Pricing</div>
+    <h2 class="page-title">CHOOSE YOUR <span>PLAN</span></h2>
+    <p class="page-sub">Start free. Scale as you grow. No hidden fees.</p>
+  </div>
+ 
+  <div class="pricing-grid">
+    <div class="pricing-card anim">
+      <div class="plan-name">Starter</div>
+      <div class="plan-price"><span>$</span>0<sub>/mo</sub></div>
+      <p class="plan-desc">Perfect for beginners exploring crypto markets.</p>
+      <div class="plan-divider"></div>
+      <ul class="plan-features">
+        <li>Up to 5 assets tracked</li>
+        <li>Basic market data</li>
+        <li>1 portfolio</li>
+        <li>Community support</li>
+        <li class="disabled">Advanced charts</li>
+        <li class="disabled">API access</li>
+        <li class="disabled">Priority support</li>
+      </ul>
+      <button class="btn-plan">Get Started Free</button>
+    </div>
+ 
+    <div class="pricing-card featured anim">
+      <div class="plan-badge">Most Popular</div>
+      <div class="plan-name">Pro</div>
+      <div class="plan-price"><span>$</span>49<sub>/mo</sub></div>
+      <p class="plan-desc">For serious traders who need professional tools.</p>
+      <div class="plan-divider"></div>
+      <ul class="plan-features">
+        <li>Unlimited assets</li>
+        <li>Real-time market data</li>
+        <li>5 portfolios</li>
+        <li>Advanced charting (TradingView)</li>
+        <li>Full API access</li>
+        <li>Priority support 24/7</li>
+        <li class="disabled">Institutional tools</li>
+      </ul>
+      <button class="btn-plan featured-btn">Start Pro Trial</button>
+    </div>
+ 
+    <div class="pricing-card anim">
+      <div class="plan-name">Elite</div>
+      <div class="plan-price"><span>$</span>199<sub>/mo</sub></div>
+      <p class="plan-desc">Institutional-grade tools for funds and power users.</p>
+      <div class="plan-divider"></div>
+      <ul class="plan-features">
+        <li>Everything in Pro</li>
+        <li>Unlimited portfolios</li>
+        <li>Institutional data feeds</li>
+        <li>Custom alerts & bots</li>
+        <li>Dedicated account manager</li>
+        <li>White-label options</li>
+        <li>SLA 99.99% uptime</li>
+      </ul>
+      <button class="btn-plan">Contact Sales</button>
+    </div>
+  </div>
+</div>
+ 
+<footer style="position:relative;z-index:2;">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="footer-logo-text">NEXUS</div>
+      <p class="footer-tagline">The next-generation crypto and finance platform built for serious traders and institutions worldwide.</p>
+      <div class="footer-socials">
+        <a class="social-btn" href="#">𝕏</a>
+        <a class="social-btn" href="#">in</a>
+        <a class="social-btn" href="#">▶</a>
+        <a class="social-btn" href="#">📱</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Platform</h4>
+      <a href="#">Markets</a>
+      <a href="#">Dashboard</a>
+      <a href="#">Portfolio</a>
+      <a href="#">Analytics</a>
+      <a href="#">API Docs</a>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <a href="#">About</a>
+      <a href="#">Blog</a>
+      <a href="#">Careers</a>
+      <a href="#">Press Kit</a>
+      <a href="#">Partners</a>
+    </div>
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <a href="#">Terms</a>
+      <a href="#">Privacy</a>
+      <a href="#">Security</a>
+      <a href="#">Compliance</a>
+      <a href="#">Cookies</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2026 NEXUS FINANCE. ALL RIGHTS RESERVED.</div>
+    <div class="footer-status">
+      <div class="status-dot"></div>
+      ALL SYSTEMS OPERATIONAL
+    </div>
+  </div>
+</footer>
+ 
+<script src="script.js"></script>
+</body>
+</html>
+
+
+
+
+
